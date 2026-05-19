@@ -1,5 +1,5 @@
 .timeline {
-  height: 90px;
+  height: 100px;
   flex-shrink: 0;
   background: var(--panel);
   border-top: 1px solid var(--border);
@@ -25,58 +25,88 @@
   font-size: 10px;
 }
 
+/* Scrollable bar track — bars grow upward from the bottom */
 .timeline-track {
   flex: 1;
   display: flex;
   align-items: flex-end;
-  gap: 2px;
+  gap: 1px;
   overflow-x: auto;
   padding-bottom: 4px;
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
 }
 
-.year-node {
+/* Each month column */
+.month-node {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 2px 3px 0;
-  border-radius: 4px;
+  padding: 0 2px;
+  border-radius: 3px;
   flex-shrink: 0;
   transition: background 0.15s;
   font-family: inherit;
 }
 
-.year-node:hover {
+.month-node:hover {
   background: var(--bg);
 }
 
-.year-bar {
+/* Add a subtle left border at each year boundary */
+.month-first-year {
+  margin-left: 4px;
+  border-left: 1px solid var(--border);
+  padding-left: 5px;
+}
+
+.month-bar {
   display: block;
-  width: 20px;
+  width: 14px;
   background: #cdc9c1;
   border-radius: 3px 3px 0 0;
-  transition: background 0.15s;
-  min-height: 6px;
+  min-height: 4px;
+  transition: background 0.2s;
 }
 
-.year-label {
-  font-size: 10px;
+/* Month number label */
+.month-num {
+  font-size: 9px;
   color: var(--subtext);
-  white-space: nowrap;
-  line-height: 1.2;
-  padding-bottom: 2px;
+  line-height: 1;
+  height: 10px;
+  display: flex;
+  align-items: center;
 }
 
-.year-active .year-bar {
+/* Year label — always reserves space to keep bars aligned */
+.year-tag {
+  font-size: 8.5px;
+  font-weight: 700;
+  color: var(--subtext);
+  opacity: 0.65;
+  line-height: 1;
+  height: 10px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Active (selected) state */
+.month-active .month-bar {
   background: var(--accent);
 }
 
-.year-active .year-label {
+.month-active .month-num {
   color: var(--accent);
   font-weight: 700;
+}
+
+.month-active .year-tag {
+  color: var(--accent);
+  opacity: 1;
 }

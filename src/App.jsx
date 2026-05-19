@@ -6,7 +6,7 @@ import EvidencePanel from './components/EvidencePanel'
 import Timeline from './components/Timeline'
 import './App.css'
 
-const DEFAULT_FILTERS = { keyword: '', types: [], yearRange: null }
+const DEFAULT_FILTERS = { keyword: '', types: [], selectedMonth: null }
 
 export default function App() {
   const [allData, setAllData] = useState([])
@@ -29,15 +29,15 @@ export default function App() {
         if (!searchable.includes(kw)) return false
       }
       if (filters.types.length && !filters.types.includes(entry.type)) return false
-      if (filters.yearRange != null && entry.year !== filters.yearRange) return false
+      if (filters.selectedMonth != null && entry.publishedAt?.slice(0, 7) !== filters.selectedMonth) return false
       return true
     })
   }, [allData, filters])
 
-  const handleYearSelect = year => {
+  const handleMonthSelect = key => {
     setFilters(prev => ({
       ...prev,
-      yearRange: prev.yearRange === year ? null : year,
+      selectedMonth: prev.selectedMonth === key ? null : key,
     }))
   }
 
@@ -75,8 +75,8 @@ export default function App() {
           />
           <Timeline
             allEntries={allData}
-            selectedYear={filters.yearRange}
-            onYearSelect={handleYearSelect}
+            selectedMonth={filters.selectedMonth}
+            onMonthSelect={handleMonthSelect}
           />
         </div>
 
