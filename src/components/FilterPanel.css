@@ -145,3 +145,19 @@
   border-color: var(--accent);
   color: white;
 }
+
+/* Archetype chips — no dot, accent active state */
+.chip-plain {
+  color: var(--subtext);
+}
+
+.chip-plain-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.chip-plain-active:hover {
+  opacity: 0.9;
+  background: var(--accent);
+}

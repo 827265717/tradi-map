@@ -1,4 +1,4 @@
-import { TYPES, TYPE_COLORS } from '../constants/taxonomy'
+import { TYPES, TYPE_COLORS, ARCHETYPES } from '../constants/taxonomy'
 import './FilterPanel.css'
 
 export default function FilterPanel({ filters, onChange, totalCount, filteredCount }) {
@@ -10,9 +10,17 @@ export default function FilterPanel({ filters, onChange, totalCount, filteredCou
     })
   }
 
-  const hasActive = filters.keyword || filters.types.length || filters.yearRange != null
+  const toggleArchetype = value => {
+    const arr = filters.archetypes
+    onChange({
+      ...filters,
+      archetypes: arr.includes(value) ? arr.filter(v => v !== value) : [...arr, value],
+    })
+  }
 
-  const clearAll = () => onChange({ keyword: '', types: [], yearRange: null })
+  const hasActive = filters.keyword || filters.types.length || filters.archetypes.length || filters.selectedFestival != null
+
+  const clearAll = () => onChange({ keyword: '', types: [], archetypes: [], selectedFestival: null })
 
   return (
     <aside className="filter-panel">
@@ -45,6 +53,19 @@ export default function FilterPanel({ filters, onChange, totalCount, filteredCou
           >
             <span className="chip-dot" />
             {t}
+          </button>
+        ))}
+      </div>
+
+      <div className="filter-section">
+        <div className="filter-label">母型 / Archetype</div>
+        {ARCHETYPES.map(a => (
+          <button
+            key={a}
+            className={`chip chip-plain ${filters.archetypes.includes(a) ? 'chip-plain-active' : ''}`}
+            onClick={() => toggleArchetype(a)}
+          >
+            {a}
           </button>
         ))}
       </div>

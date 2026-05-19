@@ -1,12 +1,13 @@
 import { useState, useMemo, useEffect } from 'react'
 import { loadFolkloreData } from './data'
+import { FESTIVAL_MONTHS, FESTIVALS, ARCHETYPE_TYPES } from './constants/taxonomy'
 import FilterPanel from './components/FilterPanel'
 import MapView from './components/MapView'
 import EvidencePanel from './components/EvidencePanel'
 import Timeline from './components/Timeline'
 import './App.css'
 
-const DEFAULT_FILTERS = { keyword: '', types: [], selectedMonth: null }
+const DEFAULT_FILTERS = { keyword: '', types: [], archetypes: [], selectedFestival: null }
 
 export default function App() {
   const [allData, setAllData] = useState([])
@@ -29,15 +30,26 @@ export default function App() {
         if (!searchable.includes(kw)) return false
       }
       if (filters.types.length && !filters.types.includes(entry.type)) return false
-      if (filters.selectedMonth != null && entry.publishedAt?.slice(0, 7) !== filters.selectedMonth) return false
+      if (filters.archetypes.length) {
+        const allowed = new Set(filters.archetypes.flatMap(a => ARCHETYPE_TYPES[a] || []))
+        if (!allowed.has(entry.type)) return false
+      }
+      if (filters.selectedFestival != null) {
+        const dashIdx = filters.selectedFestival.indexOf('-')
+        const fYear = filters.selectedFestival.slice(0, dashIdx)
+        const fName = filters.selectedFestival.slice(dashIdx + 1)
+        if (entry.publishedAt?.slice(0, 4) !== fYear) return false
+        const month = parseInt(entry.publishedAt?.slice(5, 7))
+        if (!FESTIVAL_MONTHS[fName]?.includes(month)) return false
+      }
       return true
     })
   }, [allData, filters])
 
-  const handleMonthSelect = key => {
+  const handleFestivalSelect = key => {
     setFilters(prev => ({
       ...prev,
-      selectedMonth: prev.selectedMonth === key ? null : key,
+      selectedFestival: prev.selectedFestival === key ? null : key,
     }))
   }
 
@@ -75,8 +87,8 @@ export default function App() {
           />
           <Timeline
             allEntries={allData}
-            selectedMonth={filters.selectedMonth}
-            onMonthSelect={handleMonthSelect}
+            selectedFestival={filters.selectedFestival}
+            onFestivalSelect={handleFestivalSelect}
           />
         </div>
 

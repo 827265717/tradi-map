@@ -1,5 +1,5 @@
 .timeline {
-  height: 100px;
+  height: 90px;
   flex-shrink: 0;
   background: var(--panel);
   border-top: 1px solid var(--border);
@@ -20,93 +20,108 @@
 .timeline-label em {
   font-style: normal;
   font-weight: 400;
-  margin-left: 8px;
+  margin-left: 6px;
   opacity: 0.7;
   font-size: 10px;
 }
 
-/* Scrollable bar track — bars grow upward from the bottom */
-.timeline-track {
+.timeline-scroll {
   flex: 1;
-  display: flex;
-  align-items: flex-end;
-  gap: 1px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
 }
 
-/* Each month column */
-.month-node {
+/* Festival node row */
+.festival-track {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+  padding-bottom: 4px;
+}
+
+.festival-node {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 5px;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0 2px;
-  border-radius: 3px;
+  padding: 2px 0;
+  width: 52px; /* must match NODE_WIDTH in Timeline.jsx */
   flex-shrink: 0;
+  border-radius: 4px;
   transition: background 0.15s;
   font-family: inherit;
 }
 
-.month-node:hover {
+.festival-node:hover {
   background: var(--bg);
 }
 
-/* Add a subtle left border at each year boundary */
-.month-first-year {
-  margin-left: 4px;
-  border-left: 1px solid var(--border);
-  padding-left: 5px;
+.festival-name {
+  position: relative;
+  font-size: 12px;
+  color: var(--subtext);
+  white-space: nowrap;
+  line-height: 1.3;
 }
 
-.month-bar {
+.festival-badge {
+  position: absolute;
+  top: -6px;
+  right: -16px;
+  background: var(--accent);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 1px 4px;
+  min-width: 14px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.festival-dot {
   display: block;
-  width: 14px;
-  background: #cdc9c1;
-  border-radius: 3px 3px 0 0;
-  min-height: 4px;
-  transition: background 0.2s;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid #c8c4bc;
+  background: var(--panel);
+  flex-shrink: 0;
 }
 
-/* Month number label */
-.month-num {
+/* Year ruler */
+.year-ruler {
+  position: relative;
+  height: 18px;
+  border-top: 2px solid var(--border);
+  flex-shrink: 0;
+  min-width: max-content;
+}
+
+.year-tick {
+  position: absolute;
+  top: 2px;
   font-size: 9px;
   color: var(--subtext);
-  line-height: 1;
-  height: 10px;
-  display: flex;
-  align-items: center;
-}
-
-/* Year label — always reserves space to keep bars aligned */
-.year-tag {
-  font-size: 8.5px;
-  font-weight: 700;
-  color: var(--subtext);
   opacity: 0.65;
-  line-height: 1;
-  height: 10px;
-  display: flex;
-  align-items: center;
   white-space: nowrap;
+  padding-left: 3px;
 }
 
-/* Active (selected) state */
-.month-active .month-bar {
+/* Active state */
+.festival-active .festival-name {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.festival-active .festival-dot {
   background: var(--accent);
-}
-
-.month-active .month-num {
-  color: var(--accent);
-  font-weight: 700;
-}
-
-.month-active .year-tag {
-  color: var(--accent);
-  opacity: 1;
+  border-color: var(--accent);
 }
