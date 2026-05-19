@@ -1,0 +1,82 @@
+.timeline {
+  height: 90px;
+  flex-shrink: 0;
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  padding: 7px 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.timeline-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--subtext);
+  flex-shrink: 0;
+  letter-spacing: 0.3px;
+}
+
+.timeline-label em {
+  font-style: normal;
+  font-weight: 400;
+  margin-left: 8px;
+  opacity: 0.7;
+  font-size: 10px;
+}
+
+.timeline-track {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.year-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 3px 0;
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+
+.year-node:hover {
+  background: var(--bg);
+}
+
+.year-bar {
+  display: block;
+  width: 20px;
+  background: #cdc9c1;
+  border-radius: 3px 3px 0 0;
+  transition: background 0.15s;
+  min-height: 6px;
+}
+
+.year-label {
+  font-size: 10px;
+  color: var(--subtext);
+  white-space: nowrap;
+  line-height: 1.2;
+  padding-bottom: 2px;
+}
+
+.year-active .year-bar {
+  background: var(--accent);
+}
+
+.year-active .year-label {
+  color: var(--accent);
+  font-weight: 700;
+}

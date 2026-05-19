@@ -1,0 +1,57 @@
+.map-view {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  min-height: 0;
+}
+
+.map-view .leaflet-container {
+  height: 100%;
+  width: 100%;
+  background: #e8e5de;
+  font-family: inherit;
+}
+
+/* Legend overlay */
+.map-legend {
+  position: absolute;
+  bottom: 16px;
+  left: 12px;
+  z-index: 500;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 7px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Smooth zoom */
+.map-view .leaflet-zoom-animated {
+  will-change: transform;
+}
+
+/* Attribution compact */
+.map-view .leaflet-control-attribution {
+  font-size: 9px;
+  background: rgba(255, 255, 255, 0.7);
+}
