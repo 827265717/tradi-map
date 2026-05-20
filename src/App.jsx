@@ -97,6 +97,7 @@ export default function App() {
           onClose={() => setSelectedEntry(null)}
         />
       </div>
+      <footer className="app-footer">声明：数据来源模拟数据库，请勿商用。</footer>
     </div>
   )
 }
