@@ -1,10 +1,7 @@
-import { useState } from 'react'
 import { TYPE_COLORS } from '../constants/taxonomy'
 import './EvidencePanel.css'
 
 export default function EvidencePanel({ entry, onClose }) {
-  const [bioExpanded, setBioExpanded] = useState(false)
-
   if (!entry) {
     return (
       <aside className="evidence-panel evidence-empty">
@@ -23,7 +20,7 @@ export default function EvidencePanel({ entry, onClose }) {
   return (
     <aside className="evidence-panel">
       <div className="evidence-header">
-        <span className="evidence-label">微博记录</span>
+        <span className="evidence-label">记录点</span>
         <button className="close-btn" onClick={onClose} title="关闭">×</button>
       </div>
 
@@ -52,44 +49,6 @@ export default function EvidencePanel({ entry, onClose }) {
           )}
         </div>
 
-        {/* Interaction counts */}
-        <div className="interaction-row">
-          <span className="interact-item">
-            <span className="interact-icon">🔁</span>
-            <span className="interact-num">{entry.retweets ?? 0}</span>
-            <span className="interact-label">转发</span>
-          </span>
-          <span className="interact-divider" />
-          <span className="interact-item">
-            <span className="interact-icon">💬</span>
-            <span className="interact-num">{entry.comments ?? 0}</span>
-            <span className="interact-label">评论</span>
-          </span>
-          <span className="interact-divider" />
-          <span className="interact-item">
-            <span className="interact-icon">❤️</span>
-            <span className="interact-num">{entry.likes ?? 0}</span>
-            <span className="interact-label">点赞</span>
-          </span>
-        </div>
-
-        {/* Bio (collapsible) */}
-        {entry.bio && (
-          <div className="bio-section">
-            <button className="bio-toggle" onClick={() => setBioExpanded(e => !e)}>
-              简介 {bioExpanded ? '▲' : '▼'}
-            </button>
-            {bioExpanded && <p className="bio-text">{entry.bio}</p>}
-          </div>
-        )}
-
-        {/* Weibo text */}
-        {entry.text && (
-          <div className="weibo-section">
-            <div className="weibo-label">微博正文</div>
-            <p className="weibo-text">{entry.text}</p>
-          </div>
-        )}
       </div>
     </aside>
   )
