@@ -1,7 +1,14 @@
+import { useEffect } from 'react'
 import { TYPE_COLORS } from '../constants/taxonomy'
+import { recordView } from '../api/client'
 import './EvidencePanel.css'
 
 export default function EvidencePanel({ entry, onClose }) {
+  useEffect(() => {
+    if (entry?.id) {
+      recordView(entry.id).catch(() => {})
+    }
+  }, [entry?.id])
   if (!entry) {
     return (
       <aside className="evidence-panel evidence-empty">
