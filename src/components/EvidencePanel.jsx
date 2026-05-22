@@ -3,7 +3,7 @@ import { TYPE_COLORS } from '../constants/taxonomy'
 import { recordView } from '../api/client'
 import './EvidencePanel.css'
 
-export default function EvidencePanel({ entry, onClose }) {
+export default function EvidencePanel({ entry, onClose, isFavorited, onFavoriteToggle }) {
   useEffect(() => {
     if (entry?.id) {
       recordView(entry.id).catch(() => {})
@@ -28,7 +28,16 @@ export default function EvidencePanel({ entry, onClose }) {
     <aside className="evidence-panel">
       <div className="evidence-header">
         <span className="evidence-label">记录点</span>
-        <button className="close-btn" onClick={onClose} title="关闭">×</button>
+        <div className="header-actions">
+          <button
+            className={`fav-btn${isFavorited ? ' fav-btn--active' : ''}`}
+            onClick={() => onFavoriteToggle(entry.id)}
+            title={isFavorited ? '取消收藏' : '收藏'}
+          >
+            {isFavorited ? '♥' : '♡'}
+          </button>
+          <button className="close-btn" onClick={onClose} title="关闭">×</button>
+        </div>
       </div>
 
       <div className="evidence-body">

@@ -5,6 +5,8 @@ import FilterPanel from './components/FilterPanel'
 import MapView from './components/MapView'
 import EvidencePanel from './components/EvidencePanel'
 import Timeline from './components/Timeline'
+import AuthModal from './components/AuthModal'
+import { getFavorites, addFavorite, removeFavorite } from './api/client'
 import './App.css'
 
 const DEFAULT_FILTERS = { keyword: '', types: [], archetypes: [], selectedFestival: null }
@@ -14,6 +16,9 @@ export default function App() {
   const [loading, setLoading] = useState(true)
   const [selectedEntry, setSelectedEntry] = useState(null)
   const [filters, setFilters] = useState(DEFAULT_FILTERS)
+  const [user, setUser] = useState(null)
+  const [favorites, setFavorites] = useState(new Set())
+  const [showAuth, setShowAuth] = useState(false)
 
   useEffect(() => {
     loadFolkloreData()
@@ -21,6 +26,50 @@ export default function App() {
       .catch(err => console.error('数据加载失败:', err))
       .finally(() => setLoading(false))
   }, [])
+
+  // 页面加载时恢复登录状态
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const savedUser = localStorage.getItem('user')
+    if (token && savedUser) {
+      setUser(JSON.parse(savedUser))
+      getFavorites()
+        .then(data => setFavorites(new Set(data.favorites)))
+        .catch(() => {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+        })
+    }
+  }, [])
+
+  const handleAuthSuccess = (token, u) => {
+    localStorage.setItem('token', token)
+    localStorage.setItem('user', JSON.stringify(u))
+    setUser(u)
+    setShowAuth(false)
+    getFavorites().then(data => setFavorites(new Set(data.favorites)))
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    setUser(null)
+    setFavorites(new Set())
+  }
+
+  const handleFavoriteToggle = async (entryId) => {
+    if (!user) {
+      setShowAuth(true)
+      return
+    }
+    if (favorites.has(entryId)) {
+      await removeFavorite(entryId).catch(() => {})
+      setFavorites(prev => { const s = new Set(prev); s.delete(entryId); return s })
+    } else {
+      await addFavorite(entryId).catch(() => {})
+      setFavorites(prev => new Set(prev).add(entryId))
+    }
+  }
 
   const filteredEntries = useMemo(() => {
     return allData.filter(entry => {
@@ -61,6 +110,16 @@ export default function App() {
           <span className="header-en">TradiMap</span>
         </div>
         <span className="header-sub">中国传统民俗文化地理分布图谱</span>
+        <div className="header-auth">
+          {user ? (
+            <>
+              <span className="header-user">{user.email}</span>
+              <button className="auth-btn" onClick={handleLogout}>退出</button>
+            </>
+          ) : (
+            <button className="auth-btn" onClick={() => setShowAuth(true)}>登录</button>
+          )}
+        </div>
       </header>
 
       {loading && (
@@ -95,9 +154,18 @@ export default function App() {
         <EvidencePanel
           entry={selectedEntry}
           onClose={() => setSelectedEntry(null)}
+          isFavorited={selectedEntry ? favorites.has(selectedEntry.id) : false}
+          onFavoriteToggle={handleFavoriteToggle}
         />
       </div>
       <footer className="app-footer">声明：数据来源模拟数据库，请勿商用。</footer>
+
+      {showAuth && (
+        <AuthModal
+          onSuccess={handleAuthSuccess}
+          onClose={() => setShowAuth(false)}
+        />
+      )}
     </div>
   )
 }

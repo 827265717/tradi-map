@@ -54,6 +54,31 @@
   font-weight: 600;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fav-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: var(--subtext);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 4px;
+  transition: color 0.15s, transform 0.1s;
+}
+
+.fav-btn:hover {
+  transform: scale(1.2);
+}
+
+.fav-btn--active {
+  color: #ee0055;
+}
+
 .close-btn {
   background: none;
   border: none;

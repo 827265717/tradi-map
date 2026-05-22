@@ -90,6 +90,37 @@ body {
   letter-spacing: 0.5px;
 }
 
+.header-auth {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-user {
+  font-size: 12px;
+  color: var(--subtext);
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.auth-btn {
+  font-size: 12px;
+  padding: 4px 12px;
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.auth-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
 /* ─── Body layout ─── */
 .app-body {
   display: flex;
